@@ -1,0 +1,57 @@
+<mujoco model="plane_on_plane">
+
+  <compiler angle="radian" meshdir="assets" texturedir="./texture" />
+
+  <visual>
+    <quality shadowsize="8192" offsamples="8" numslices="64" numstacks="64" />
+    <headlight active="1" />
+    <rgba haze="0.15 0.25 0.35 1" />
+  </visual>
+
+  <option timestep="0.001" integrator="Euler" iterations="50" solver="Newton" impratio="5" noslip_iterations="5" tolerance="1e-8" cone="elliptic">
+    <flag actuation="enable" gravity="enable" warmstart="enable" />
+  </option>
+
+  <extension>
+    <plugin plugin="mujoco.elasticity.cable"/>
+  </extension>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="200" height="200" />
+    <texture name="plane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
+    <material name="plane" reflectance="0.3" texture="plane" texrepeat="1 2" texuniform="true" />
+  </asset>
+
+  <include name = "panda1" file="panda1.xml"/>
+  <include name = "panda2" file="panda2.xml"/>
+
+  <worldbody>
+    <camera name="cam" mode="targetbody" pos="1 1 1"/>
+    <light directional="true" diffuse=".2 .2 .2" specular="0 0 0" pos="0 1 5" dir="0 -1 -1" castshadow="false"/>
+    <light directional="false" diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 -1 4" dir="0 0 -1" />
+    <light directional="true" diffuse="0 0 0" specular=".7 .7 .7" pos="0 3 3" dir="0 -3 -3" />
+    
+    <body name="box1" pos="0.3 0 .03">
+      <geom type="box" size=".03 .03 .03"  condim="6" />
+      <joint type="free" />
+    </body>
+    <body name="box2" pos="-0.3 0 .03">
+      <geom type="box" size=".03 .03 .03" condim="6" />
+      <joint type="free" />
+    </body>
+
+    <geom name="base_plane" type="plane" size="0.6 0.6 0.01" rgba="0.7 0.7 0.7 1"/>
+    
+    <!-- Working Plane (0.8m x 0.4m) -->
+    <geom name="working_plane" type="plane" size="0.4 0.2 0.01" pos="0 0 0.01" material="plane"/>
+
+    <!-- Robot Plane 1 (0.8m x 0.4m) -->
+    <geom name="robot_plane_1" type="plane" size="0.1 0.2 0.01" pos="0.2 -0.4 0.01" rgba="0.8 0.8 0.2 1"/>
+    <!-- Robot Plane 2 (0.4m x 0.2m) -->
+    <geom name="robot_plane_2" type="plane" size="0.1 0.2 0.01" pos="-0.2 0.4 0.01" rgba="0.8 0.8 0.2 1"/>
+
+  </worldbody>
+  <keyframe>
+    <key name="home" qpos="0 0 0 -1.57079 0 1.57079 -0.7853 0.04 0.04 0 0 0 -1.57079 0 1.57079 -0.7853 0.04 0.04 0.3 0 .03 0 0 0 0 -0.3 0 .03 0 0 0 0" ctrl="0 0 0 -1.57079 0 1.57079 -0.7853 255 0 0 0 -1.57079 0 1.57079 -0.7853 255"/>
+  </keyframe>
+</mujoco>

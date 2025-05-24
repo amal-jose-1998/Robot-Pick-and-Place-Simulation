@@ -1,0 +1,43 @@
+<mujoco model="CableOnPlane">
+  <extension>
+    <plugin plugin="mujoco.elasticity.cable"/>
+  </extension>
+
+  <statistic center="0 0 .3" extent="1"/>
+  <visual>
+    <global elevation="-30"/>
+  </visual>
+
+  <compiler autolimits="true"/>
+
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512" />
+    <texture name="plane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
+    <material name="plane" reflectance="0.3" texture="plane" texrepeat="1 4" texuniform="true" />
+  </asset>
+
+  <option gravity="0 0 -9.81"/>
+
+  <worldbody>
+    <!-- Define the cable -->
+    <body name="CB0" pos="0 -0.75 0.5" euler="0 0 1.57">
+      <composite type="cable" curve="s" count="100 1 1" size="1.5" offset="0 0 0" initial="coil">
+        <plugin plugin="mujoco.elasticity.cable">
+          <!-- Cable properties -->
+          <config key="twist" value="1e7"/>
+          <config key="bend" value="4e6"/>
+          <config key="vmax" value="0.08"/>
+        </plugin>
+        <joint kind="main" damping=".015"/>
+        <geom type="capsule" size=".005" rgba=".8 .2 .1 1" condim="1"/>
+      </composite>
+    </body>
+
+    <!-- Define the plane -->
+    <body name="plane" pos="0 0 0">
+      <geom name="floor" type="plane" size="0.5 1 0.1" material="plane" condim="3" />
+    </body>
+    
+  </worldbody>
+</mujoco>

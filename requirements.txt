@@ -1,0 +1,5 @@
+numpy
+mujoco==3.2.5
+thread==2.0.5
+glfw==2.7.0
+imageio==2.37.0
